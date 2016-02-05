@@ -102,7 +102,6 @@ var FitUpload = function (_React$Component) {
                 _this3.setState({
                     progressInfo: progressInfo
                 });
-                // console.log(e.percent);
             }).end(function (err, res) {
                 if (!err) {
                     var progressInfo = _this3.state.progressInfo;

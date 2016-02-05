@@ -21,16 +21,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var UploadFileList = function (_React$Component) {
     _inherits(UploadFileList, _React$Component);
 
-    function UploadFileList() {
-        var _Object$getPrototypeO;
-
+    function UploadFileList(props) {
         _classCallCheck(this, UploadFileList);
 
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(UploadFileList)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(UploadFileList).call(this, props));
 
         _this.state = {};
         return _this;
@@ -131,8 +125,8 @@ var UploadFileList = function (_React$Component) {
     return UploadFileList;
 }(_react2.default.Component);
 
+exports.default = UploadFileList;
+
 UploadFileList.defaultProps = {
     type: 'text'
 };
-
-exports.default = UploadFileList;

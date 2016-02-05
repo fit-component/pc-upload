@@ -55,7 +55,6 @@ export default class FitUpload extends React.Component {
             this.setState({
                 progressInfo: progressInfo
             });
-            // console.log(e.percent);
         })
         .end((err, res) => {
             if (!err) {
