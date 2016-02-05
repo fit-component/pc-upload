@@ -1,5 +1,5 @@
 import React from 'react'
-import Upload from 'fit-upload'
+import { Upload } from 'fit-upload'
 
 let defaultFiles = [{
     url: '/static/左图.jpg',

@@ -241,7 +241,7 @@ var Upload = function (_React$Component) {
             if (props.type === 'drag') {
                 var dragStyle = this.state.dragStatus === 'dragover' ? extendStyle(styles.dragDefault, styles.dragStart) : styles.dragDefault;
                 return _react2.default.createElement(
-                    'div',
+                    'span',
                     { style: props.style },
                     this.fileInputRender({ display: 'none' }),
                     _react2.default.createElement(
@@ -256,7 +256,7 @@ var Upload = function (_React$Component) {
                 );
             } else if (props.type === 'button') {
                 return _react2.default.createElement(
-                    'div',
+                    'span',
                     null,
                     _react2.default.createElement(
                         'div',
@@ -269,7 +269,7 @@ var Upload = function (_React$Component) {
                 );
             }
             return _react2.default.createElement(
-                'div',
+                'span',
                 null,
                 this.fileInputRender(props.style),
                 this.progressListRender(),

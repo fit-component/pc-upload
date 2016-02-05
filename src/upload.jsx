@@ -163,33 +163,35 @@ class Upload extends React.Component {
         var fileList = this.fileListRender();
         if (props.type === 'drag') {
             var dragStyle = this.state.dragStatus === 'dragover' ? extendStyle(styles.dragDefault, styles.dragStart) : styles.dragDefault;
-            return (<div style={props.style}>
+            return (
+                <span style={props.style}>
                     { this.fileInputRender({ display: 'none' }) }
                     <div style={dragStyle} onDrop={ this.onFileDrop.bind(this) } onDragOver={ this.onFileDrop.bind(this)} onClick={() => this._fileInput.click()}>
                         { props.children }
                     </div>
                     {this.progressListRender()}
                     {fileList}
-                </div>);
+                </span>
+            );
         }
         else if (props.type === 'button') {
             return (
-                <div>
+                <span>
                     <div style={props.style}>
                         { this.fileInputRender(styles.transparentInput) }
                         { props.children }
                     </div>
                     { this.progressListRender() }
                     { fileList }
-                </div>
+                </span>
             );
         }
         return (
-            <div>
+            <span>
                 { this.fileInputRender(props.style) }
                 { this.progressListRender()}
                 { fileList }
-            </div>
+            </span>
         );
     }
 }
@@ -205,4 +207,4 @@ Upload.defaultProps = {
     multiple: true,
     hindleBeforeUpload() {}
 };
-export default Upload;
+export default Upload
