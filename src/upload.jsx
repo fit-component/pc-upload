@@ -44,8 +44,15 @@ class Upload extends React.Component {
         this.upload(this._fileInput.files);
     }
     upload(files) {
-        for (var i = 0; i < files.length; i++) {
-            this.post(files[i]);
+        for (let i = 0; i < files.length; i++) {
+            let result = this.props.beforeUpload(files[i]);
+            if(result === undefined || result === true) {
+                this.post(files[i]);
+            } if (result instanceof Promise) {
+                result.then(() => {
+                    this.post(files[i]);
+                });
+            }
         }
     }
     post(file) {
@@ -194,6 +201,7 @@ Upload.defaultProps = {
     type: 'normal',
     extraData: {},
     listType: 'text',
-    multiple: true
+    multiple: true,
+    hindleBeforeUpload() {}
 };
 export default Upload;
