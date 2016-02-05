@@ -2,16 +2,9 @@ import React from "react";
 import request from 'superagent';
 import UploadFileList from './upload-file-list';
 
-function extendStyle(a, b) {
-    for (var i in b) {
-        a[i] = b[i];
-    }
-    return a;
-}
-class Upload extends React.Component {
-    constructor(...args) {
-        super(...args);
-        this.displayName = 'FitUpload';
+export default class FitUpload extends React.Component {
+    constructor(props) {
+        super(props);
         this.state = {
             dragStatus: 'drag',
             progressInfo: {}
@@ -25,14 +18,6 @@ class Upload extends React.Component {
                 height: '100%',
                 boxSizing: 'border-box',
                 backgroundColor: '#fff'
-            },
-            transparentInput: {
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                opacity: 0
             },
             dragStart: {
                 border: '2px dashed #aaaaaa'
@@ -155,31 +140,38 @@ class Upload extends React.Component {
         );
     }
     fileInputRender(style) {
-        return (<input ref={(c) => this._fileInput = c} type="file" accept={this.props.accept} multiple={this.props.multiple} style={style} onChange={(e) => this.onFileChange(e)}/>);
+        return (
+            <input
+                ref={(c) => this._fileInput = c}
+                type="file"
+                accept={this.props.accept}
+                multiple={this.props.multiple}
+                style={style}
+                onChange={(e) => this.onFileChange(e)} />);
     }
     render() {
-        var props = this.props;
         var styles = this.getStyles();
         var fileList = this.fileListRender();
-        if (props.type === 'drag') {
-            var dragStyle = this.state.dragStatus === 'dragover' ? extendStyle(styles.dragDefault, styles.dragStart) : styles.dragDefault;
+
+        if (this.props.type === 'drag') {
+            var dragStyle = this.state.dragStatus === 'dragover' ? Object.assign(styles.dragDefault, styles.dragStart) : styles.dragDefault;
             return (
-                <span style={props.style}>
+                <span style={this.props.style}>
                     { this.fileInputRender({ display: 'none' }) }
                     <div style={dragStyle} onDrop={ this.onFileDrop.bind(this) } onDragOver={ this.onFileDrop.bind(this)} onClick={() => this._fileInput.click()}>
-                        { props.children }
+                        { this.props.children }
                     </div>
                     {this.progressListRender()}
                     {fileList}
                 </span>
             );
         }
-        else if (props.type === 'button') {
+        else if (this.props.type === 'button') {
             return (
                 <span>
-                    <div style={props.style}>
-                        { this.fileInputRender(styles.transparentInput) }
-                        { props.children }
+                    <div style={this.props.style} onClick={() => this._fileInput.click()}>
+                        { this.fileInputRender({ display: 'none' }) }
+                        { this.props.children }
                     </div>
                     { this.progressListRender() }
                     { fileList }
@@ -188,23 +180,41 @@ class Upload extends React.Component {
         }
         return (
             <span>
-                { this.fileInputRender(props.style) }
+                { this.fileInputRender(this.props.style) }
                 { this.progressListRender()}
                 { fileList }
             </span>
         );
     }
 }
-Upload.defaultProps = {
+FitUpload.defaultProps = {
+    // @desc 文件列表
     value: [],
+
+    // @desc 默认文件列表
     defaultValue: [],
+
+    // @desc 同input的name属性，也是上传字段名
     name: '',
+
+    // @desc 上传地址
     action: '',
+
+    // @desc 上传状态改变时
     onChange() { },
+
+    // @desc 样式：drag(拖拽)/button(无样式)/normal(默认)
     type: 'normal',
+
+    // @desc 上传需要的额外字段
     extraData: {},
+
+    // @desc 文件列表样式: text/pictrue/none
     listType: 'text',
+
+    // @desc 是否多文件上传
     multiple: true,
+
+    // @desc: 上传前处理，返回true/false/promise
     hindleBeforeUpload() {}
 };
-export default Upload

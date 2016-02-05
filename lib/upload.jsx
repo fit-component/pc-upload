@@ -1,5 +1,7 @@
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 Object.defineProperty(exports, "__esModule", {
@@ -26,28 +28,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function extendStyle(a, b) {
-    for (var i in b) {
-        a[i] = b[i];
-    }
-    return a;
-}
+var FitUpload = function (_React$Component) {
+    _inherits(FitUpload, _React$Component);
 
-var Upload = function (_React$Component) {
-    _inherits(Upload, _React$Component);
+    function FitUpload(props) {
+        _classCallCheck(this, FitUpload);
 
-    function Upload() {
-        var _Object$getPrototypeO;
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FitUpload).call(this, props));
 
-        _classCallCheck(this, Upload);
-
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Upload)).call.apply(_Object$getPrototypeO, [this].concat(args)));
-
-        _this.displayName = 'FitUpload';
         _this.state = {
             dragStatus: 'drag',
             progressInfo: {}
@@ -55,7 +43,7 @@ var Upload = function (_React$Component) {
         return _this;
     }
 
-    _createClass(Upload, [{
+    _createClass(FitUpload, [{
         key: 'getStyles',
         value: function getStyles() {
             return {
@@ -65,14 +53,6 @@ var Upload = function (_React$Component) {
                     height: '100%',
                     boxSizing: 'border-box',
                     backgroundColor: '#fff'
-                },
-                transparentInput: {
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    opacity: 0
                 },
                 dragStart: {
                     border: '2px dashed #aaaaaa'
@@ -224,9 +204,15 @@ var Upload = function (_React$Component) {
         value: function fileInputRender(style) {
             var _this5 = this;
 
-            return _react2.default.createElement('input', { ref: function ref(c) {
+            return _react2.default.createElement('input', {
+                ref: function ref(c) {
                     return _this5._fileInput = c;
-                }, type: 'file', accept: this.props.accept, multiple: this.props.multiple, style: style, onChange: function onChange(e) {
+                },
+                type: 'file',
+                accept: this.props.accept,
+                multiple: this.props.multiple,
+                style: style,
+                onChange: function onChange(e) {
                     return _this5.onFileChange(e);
                 } });
         }
@@ -235,34 +221,36 @@ var Upload = function (_React$Component) {
         value: function render() {
             var _this6 = this;
 
-            var props = this.props;
             var styles = this.getStyles();
             var fileList = this.fileListRender();
-            if (props.type === 'drag') {
-                var dragStyle = this.state.dragStatus === 'dragover' ? extendStyle(styles.dragDefault, styles.dragStart) : styles.dragDefault;
+
+            if (this.props.type === 'drag') {
+                var dragStyle = this.state.dragStatus === 'dragover' ? _extends(styles.dragDefault, styles.dragStart) : styles.dragDefault;
                 return _react2.default.createElement(
                     'span',
-                    { style: props.style },
+                    { style: this.props.style },
                     this.fileInputRender({ display: 'none' }),
                     _react2.default.createElement(
                         'div',
                         { style: dragStyle, onDrop: this.onFileDrop.bind(this), onDragOver: this.onFileDrop.bind(this), onClick: function onClick() {
                                 return _this6._fileInput.click();
                             } },
-                        props.children
+                        this.props.children
                     ),
                     this.progressListRender(),
                     fileList
                 );
-            } else if (props.type === 'button') {
+            } else if (this.props.type === 'button') {
                 return _react2.default.createElement(
                     'span',
                     null,
                     _react2.default.createElement(
                         'div',
-                        { style: props.style },
-                        this.fileInputRender(styles.transparentInput),
-                        props.children
+                        { style: this.props.style, onClick: function onClick() {
+                                return _this6._fileInput.click();
+                            } },
+                        this.fileInputRender({ display: 'none' }),
+                        this.props.children
                     ),
                     this.progressListRender(),
                     fileList
@@ -271,27 +259,46 @@ var Upload = function (_React$Component) {
             return _react2.default.createElement(
                 'span',
                 null,
-                this.fileInputRender(props.style),
+                this.fileInputRender(this.props.style),
                 this.progressListRender(),
                 fileList
             );
         }
     }]);
 
-    return Upload;
+    return FitUpload;
 }(_react2.default.Component);
 
-Upload.defaultProps = {
+exports.default = FitUpload;
+
+FitUpload.defaultProps = {
+    // @desc 文件列表
     value: [],
+
+    // @desc 默认文件列表
     defaultValue: [],
+
+    // @desc 同input的name属性，也是上传字段名
     name: '',
+
+    // @desc 上传地址
     action: '',
+
+    // @desc 上传状态改变时
     onChange: function onChange() {},
 
+    // @desc 样式：drag(拖拽)/button(无样式)/normal(默认)
     type: 'normal',
+
+    // @desc 上传需要的额外字段
     extraData: {},
+
+    // @desc 文件列表样式: text/pictrue/none
     listType: 'text',
+
+    // @desc 是否多文件上传
     multiple: true,
+
+    // @desc: 上传前处理，返回true/false/promise
     hindleBeforeUpload: function hindleBeforeUpload() {}
 };
-exports.default = Upload;
