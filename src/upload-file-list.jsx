@@ -1,8 +1,8 @@
 import React from 'react';
 
-class UploadFileList extends React.Component {
-    constructor(...args) {
-        super(...args);
+export default class UploadFileList extends React.Component {
+    constructor(props) {
+        super(props);
         this.state = {};
     }
     textItemRender(info) {
@@ -79,4 +79,3 @@ UploadFileList.defaultProps = {
     type: 'text'
 };
 
-export default UploadFileList;
