@@ -11,6 +11,7 @@ function extendStyle(a, b) {
 class Upload extends React.Component {
     constructor(...args) {
         super(...args);
+        this.displayName = 'FitUpload';
         this.state = {
             dragStatus: 'drag',
             progressInfo: {}

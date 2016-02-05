@@ -47,6 +47,7 @@ var Upload = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Upload)).call.apply(_Object$getPrototypeO, [this].concat(args)));
 
+        _this.displayName = 'FitUpload';
         _this.state = {
             dragStatus: 'drag',
             progressInfo: {}
@@ -88,14 +89,27 @@ var Upload = function (_React$Component) {
     }, {
         key: 'upload',
         value: function upload(files) {
+            var _this2 = this;
+
+            var _loop = function _loop(i) {
+                var result = _this2.props.beforeUpload(files[i]);
+                if (result === undefined || result === true) {
+                    _this2.post(files[i]);
+                }if (result instanceof Promise) {
+                    result.then(function () {
+                        _this2.post(files[i]);
+                    });
+                }
+            };
+
             for (var i = 0; i < files.length; i++) {
-                this.post(files[i]);
+                _loop(i);
             }
         }
     }, {
         key: 'post',
         value: function post(file) {
-            var _this2 = this;
+            var _this3 = this;
 
             var data = new FormData();
             data.append(this.props.field, file);
@@ -103,26 +117,26 @@ var Upload = function (_React$Component) {
                 data.append(key, this.props.extraData[key]);
             }
             _superagent2.default.post(this.props.action).send(data).on('progress', function (e) {
-                var progressInfo = _this2.state.progressInfo;
+                var progressInfo = _this3.state.progressInfo;
                 progressInfo[file.name] = e.percent;
-                _this2.setState({
+                _this3.setState({
                     progressInfo: progressInfo
                 });
                 // console.log(e.percent);
             }).end(function (err, res) {
                 if (!err) {
-                    var progressInfo = _this2.state.progressInfo;
+                    var progressInfo = _this3.state.progressInfo;
                     delete progressInfo[file.name];
-                    _this2.props.onChange(file.name, {
+                    _this3.props.onChange(file.name, {
                         response: res.body || res.text,
                         status: 'done',
                         name: file.name
                     });
-                    _this2.setState({
+                    _this3.setState({
                         progressInfo: progressInfo
                     });
                 } else {
-                    _this2.props.onChange(file.name, {
+                    _this3.props.onChange(file.name, {
                         response: res.body || res.text,
                         status: 'error',
                         name: file.name
@@ -154,13 +168,13 @@ var Upload = function (_React$Component) {
     }, {
         key: 'progressListRender',
         value: function progressListRender() {
-            var _this3 = this;
+            var _this4 = this;
 
             return _react2.default.createElement(
                 'div',
                 null,
                 Object.keys(this.state.progressInfo).map(function (key) {
-                    return _this3.progressItemRender(key, _this3.state.progressInfo[key]);
+                    return _this4.progressItemRender(key, _this4.state.progressInfo[key]);
                 })
             );
         }
@@ -208,18 +222,18 @@ var Upload = function (_React$Component) {
     }, {
         key: 'fileInputRender',
         value: function fileInputRender(style) {
-            var _this4 = this;
+            var _this5 = this;
 
             return _react2.default.createElement('input', { ref: function ref(c) {
-                    return _this4._fileInput = c;
+                    return _this5._fileInput = c;
                 }, type: 'file', accept: this.props.accept, multiple: this.props.multiple, style: style, onChange: function onChange(e) {
-                    return _this4.onFileChange(e);
+                    return _this5.onFileChange(e);
                 } });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this5 = this;
+            var _this6 = this;
 
             var props = this.props;
             var styles = this.getStyles();
@@ -233,7 +247,7 @@ var Upload = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { style: dragStyle, onDrop: this.onFileDrop.bind(this), onDragOver: this.onFileDrop.bind(this), onClick: function onClick() {
-                                return _this5._fileInput.click();
+                                return _this6._fileInput.click();
                             } },
                         props.children
                     ),
@@ -277,6 +291,7 @@ Upload.defaultProps = {
     type: 'normal',
     extraData: {},
     listType: 'text',
-    multiple: true
+    multiple: true,
+    hindleBeforeUpload: function hindleBeforeUpload() {}
 };
 exports.default = Upload;
