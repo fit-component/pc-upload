@@ -2,7 +2,7 @@ import React from "react";
 import request from 'superagent';
 import UploadFileList from './upload-file-list';
 
-export default class FitUpload extends React.Component {
+export default class Upload extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -186,7 +186,8 @@ export default class FitUpload extends React.Component {
         );
     }
 }
-FitUpload.defaultProps = {
+
+Upload.defaultProps = {
     // @desc 文件列表
     value: [],
 
