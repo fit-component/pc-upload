@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 export default class UploadFileList extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = {};
+        super(props)
+        this.state = {}
     }
+
     textItemRender(info) {
         var closeBtnStyle = {
             fontSize: 12,
@@ -12,23 +13,26 @@ export default class UploadFileList extends React.Component {
             marginLeft: 5,
             color: '#98a6ad',
             cursor: 'pointer'
-        };
+        }
+
         if (this.props.type === 'picture') {
             var picItemStyle = {
                 padding: 8,
                 border: '1px solid #edf1f2',
                 margin: '5px 0'
-            };
+            }
+
             var picItemImageStyle = {
                 backgroundImage: `url(${info.url})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 width: 40,
                 height: 40
-            };
+            }
+
             return (
                 <div key={ info.name }
-                    style={ picItemStyle } >
+                     style={ picItemStyle }>
                     <div style={ closeBtnStyle }>x</div>
                     <div style={{ display: 'table' }}>
                         <div style={{
@@ -45,8 +49,9 @@ export default class UploadFileList extends React.Component {
                         }}>{ info.name }</div>
                     </div>
                 </div>
-            );
+            )
         }
+
         var textItemStyle = {
             color: '#333',
             fontSize: 12,
@@ -55,27 +60,29 @@ export default class UploadFileList extends React.Component {
             backgroundColor: '#edf1f2',
             borderRadius: 50,
             margin: '10px 5px'
-        };
+        }
+
         return (
             <div style={ textItemStyle }
-                key={ info.name }>
+                 key={ info.name }>
                 <div style={ closeBtnStyle }>x</div>
                 { info.name }
             </div>
-        );
+        )
     }
+
     render() {
+        let Children = this.props.list.map((info) => this.textItemRender(info))
+
         return (
             <div>
-            {
-                this.props.list.map((info) => this.textItemRender(info))
-            }
-            < /div>
-        );
+                {Children}
+            </div>
+        )
     }
 }
 
 UploadFileList.defaultProps = {
     type: 'text'
-};
+}
 
