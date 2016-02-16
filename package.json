@@ -1,7 +1,7 @@
 {
   "name": "fit-upload",
   "version": "0.0.19",
-  "description": "贴吧React上传组件",
+  "description": "上传组件",
   "main": "lib/index.js",
   "scripts": {
     "test": "node ./test/server.js & node test.js"
