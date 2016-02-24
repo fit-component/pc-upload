@@ -1,6 +1,6 @@
 {
   "name": "fit-upload",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "上传组件",
   "main": "lib/index.js",
   "scripts": {
