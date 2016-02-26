@@ -70,7 +70,7 @@ export default class UploadFileList extends React.Component {
     }
 
     render() {
-        let Children = this.props.list.map((info) => <div key={info.name}>this.textItemRender(info)</div>)
+        let Children = this.props.list.map((info) => <div key={info.name}>{this.textItemRender(info)}</div>)
 
         return (
             <div>
