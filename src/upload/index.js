@@ -34,7 +34,7 @@ export default class Upload extends React.Component {
             let result = this.props.beforeUpload(files[i]);
             if(result === undefined || result === true) {
                 this.post(files[i]);
-            } if (result instanceof Promise) {
+            } if (result.then && typeof result.then === 'function') {
                 result.then(() => {
                     this.post(files[i]);
                 });
