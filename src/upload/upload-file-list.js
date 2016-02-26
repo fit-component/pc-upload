@@ -31,8 +31,7 @@ export default class UploadFileList extends React.Component {
             }
 
             return (
-                <div key={ info.name }
-                     style={ picItemStyle }>
+                <div style={ picItemStyle }>
                     <div style={ closeBtnStyle }>x</div>
                     <div style={{ display: 'table' }}>
                         <div style={{
@@ -63,8 +62,7 @@ export default class UploadFileList extends React.Component {
         }
 
         return (
-            <div style={ textItemStyle }
-                 key={ info.name }>
+            <div style={ textItemStyle }>
                 <div style={ closeBtnStyle }>x</div>
                 { info.name }
             </div>
@@ -72,7 +70,7 @@ export default class UploadFileList extends React.Component {
     }
 
     render() {
-        let Children = this.props.list.map((info) => this.textItemRender(info))
+        let Children = this.props.list.map((info) => <div key={info.name}>this.textItemRender(info)</div>)
 
         return (
             <div>
