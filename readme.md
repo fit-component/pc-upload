@@ -1,8 +1,8 @@
-            # 上传
+# 上传
 
-            ---
+---
 
-            ````jsx
-            npm install fit-upload /* or */ fis3 install fit-upload
-            ````
+````jsx
+npm install fit-upload /* or */ fis3 install fit-upload
+````
 
