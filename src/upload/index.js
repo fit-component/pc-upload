@@ -1,6 +1,7 @@
-import React from "react";
-import request from 'superagent';
-import UploadFileList from './upload-file-list';
+import React from "react"
+import request from 'superagent'
+import classNames from 'classnames'
+import UploadFileList from './upload-file-list'
 
 export default class Upload extends React.Component {
     constructor(props) {
@@ -8,8 +9,9 @@ export default class Upload extends React.Component {
         this.state = {
             dragStatus: 'drag',
             progressInfo: {}
-        };
+        }
     }
+
     getStyles() {
         return {
             dragDefault: {
@@ -22,168 +24,189 @@ export default class Upload extends React.Component {
             dragStart: {
                 border: '2px dashed #aaaaaa'
             }
-        };
+        }
     }
+
     onFileChange(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.upload(this._fileInput.files);
+        e.preventDefault()
+        e.stopPropagation()
+        this.upload(this._fileInput.files)
     }
+
     upload(files) {
         for (let i = 0; i < files.length; i++) {
-            let result = this.props.beforeUpload(files[i]);
-            if(result === undefined || result === true) {
+            let result = this.props.beforeUpload(files[i])
+            if (result === undefined || result === true) {
                 this.post(files[i]);
-            } if (result.then && typeof result.then === 'function') {
+            }
+            if (result.then && typeof result.then === 'function') {
                 result.then(() => {
-                    this.post(files[i]);
-                });
+                    this.post(files[i])
+                })
             }
         }
     }
+
     post(file) {
-        var data = new FormData();
-        data.append(this.props.field, file);
+        var data = new FormData()
+        data.append(this.props.field, file)
         for (var key in this.props.extraData) {
-            data.append(key, this.props.extraData[key]);
+            data.append(key, this.props.extraData[key])
         }
         request.post(this.props.action)
-        .send(data)
-        .on('progress', (e) => {
-            var progressInfo = this.state.progressInfo;
-            progressInfo[file.name] = e.percent;
-            this.setState({
-                progressInfo: progressInfo
-            });
-        })
-        .end((err, res) => {
-            if (!err) {
-                var progressInfo = this.state.progressInfo;
-                delete progressInfo[file.name];
-                this.props.onChange(file.name, {
-                    response: res.body || res.text,
-                    status: 'done',
-                    name: file.name
-                });
+            .send(data)
+            .on('progress', (e) => {
+                var progressInfo = this.state.progressInfo
+                progressInfo[file.name] = e.percent
                 this.setState({
                     progressInfo: progressInfo
-                });
-            }
-            else {
-                this.props.onChange(file.name, {
-                    response: res.body || res.text,
-                    status: 'error',
-                    name: file.name
-                });
-            }
-        });
+                })
+            })
+            .end((err, res) => {
+                if (!err) {
+                    var progressInfo = this.state.progressInfo
+                    delete progressInfo[file.name]
+                    this.props.onChange(file.name, {
+                        response: res.body || res.text,
+                        status: 'done',
+                        name: file.name
+                    })
+                    this.setState({
+                        progressInfo: progressInfo
+                    })
+                }
+                else {
+                    this.props.onChange(file.name, {
+                        response: res.body || res.text,
+                        status: 'error',
+                        name: file.name
+                    })
+                }
+            })
     }
+
     onFileDrop(e) {
         this.setState({
             dragStatus: e.type
-        });
+        })
         if (e.type === 'dragover') {
-            return e.preventDefault();
+            return e.preventDefault()
         }
-        const files = e.dataTransfer.files;
-        this.upload(files);
-        e.preventDefault();
+        const files = e.dataTransfer.files
+        this.upload(files)
+        e.preventDefault()
     }
+
     fileListRender() {
         if (this.props.listType === 'none') {
-            return null;
+            return null
         }
-        return <UploadFileList type={this.props.listType} list={this.props.value}/>;
+        return <UploadFileList type={this.props.listType}
+                               list={this.props.value}/>
     }
+
     progressListRender() {
         return (
             <div>
-            {
-                Object.keys(this.state.progressInfo).map((key) => {
-                    return this.progressItemRender(key, this.state.progressInfo[key]);
-                })
-            }
+                {
+                    Object.keys(this.state.progressInfo).map((key) => {
+                        return this.progressItemRender(key, this.state.progressInfo[key])
+                    })
+                }
             </div>
-        );
+        )
     }
+
     progressItemRender(key, pos) {
         var itemStyle = {
             transition: 'margin .3s ease, opacity .3s ease',
             margin: '10px 0'
-        };
+        }
         var itemTextStyle = {
             fontSize: 12,
             color: '#98a6ad',
             marginBottom: 5
-        };
+        }
         var progressStyle = {
             overflow: 'hidden',
             height: 2,
             borderRadius: 4,
             backgroundColor: '#edf1f2'
-        };
+        }
         var progressInnerStyle = {
             backgroundColor: '#23b7e5',
             height: 2,
             borderRadius: 4,
             transition: 'width .3s linear',
             width: `${pos}%`
-        };
+        }
         return (
-            <div style={itemStyle} key={key}>
+            <div style={itemStyle}
+                 key={key}>
                 <div style={itemTextStyle}>{key}:</div>
                 <div style={progressStyle}>
                     <div style={progressInnerStyle}></div>
                 </div>
             </div>
-        );
+        )
     }
-    fileInputRender(style) {
+
+    fileInputRender() {
         return (
             <input
                 ref={(c) => this._fileInput = c}
                 type="file"
                 accept={this.props.accept}
                 multiple={this.props.multiple}
-                style={style}
-                onChange={(e) => this.onFileChange(e)} />);
+                onChange={(e) => this.onFileChange(e)}/>
+        )
     }
-    render() {
-        var styles = this.getStyles();
-        var fileList = this.fileListRender();
 
-        if (this.props.type === 'drag') {
-            var dragStyle = this.state.dragStatus === 'dragover' ? Object.assign(styles.dragDefault, styles.dragStart) : styles.dragDefault;
+    render() {
+        const {className, type, children, ...others} = this.props
+        const classes = classNames({
+            '_namespace': true,
+            [className]: className
+        })
+
+        var styles = this.getStyles()
+        var fileList = this.fileListRender()
+
+        if (type === 'drag') {
+            var dragStyle = this.state.dragStatus === 'dragover' ? Object.assign(styles.dragDefault, styles.dragStart) : styles.dragDefault
             return (
-                <span style={this.props.style}>
-                    { this.fileInputRender({ display: 'none' }) }
-                    <div style={dragStyle} onDrop={ this.onFileDrop.bind(this) } onDragOver={ this.onFileDrop.bind(this)} onClick={() => this._fileInput.click()}>
-                        { this.props.children }
+                <span>
+                    { this.fileInputRender({display: 'none'}) }
+                    <div style={dragStyle}
+                         onDrop={ this.onFileDrop.bind(this) }
+                         onDragOver={ this.onFileDrop.bind(this)}
+                         onClick={() => this._fileInput.click()}>
+                        {children}
                     </div>
                     {this.progressListRender()}
                     {fileList}
                 </span>
-            );
-        }
-        else if (this.props.type === 'button') {
+            )
+        } else if (type === 'button') {
             return (
                 <span>
-                    <div style={this.props.style} onClick={() => this._fileInput.click()}>
-                        { this.fileInputRender({ display: 'none' }) }
-                        { this.props.children }
+                    <div onClick={() => this._fileInput.click()}>
+                        { this.fileInputRender({display: 'none'}) }
+                        {children}
                     </div>
                     { this.progressListRender() }
                     { fileList }
                 </span>
-            );
+            )
         }
+
         return (
-            <span>
-                { this.fileInputRender(this.props.style) }
+            <span {...others} className={classes}>
+                { this.fileInputRender() }
                 { this.progressListRender()}
                 { fileList }
             </span>
-        );
+        )
     }
 }
 
@@ -201,7 +224,8 @@ Upload.defaultProps = {
     action: '',
 
     // @desc 上传状态改变时
-    onChange() { },
+    onChange() {
+    },
 
     // @desc 样式：drag(拖拽)/button(无样式)/normal(默认)
     type: 'normal',
@@ -216,5 +240,6 @@ Upload.defaultProps = {
     multiple: true,
 
     // @desc: 上传前处理，返回true/false/promise
-    hindleBeforeUpload() {}
+    hindleBeforeUpload() {
+    }
 };
