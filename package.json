@@ -1,6 +1,6 @@
 {
   "name": "fit-upload",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "description": "上传组件",
   "main": "lib/index.js",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "react": "^0.14.7",
-    "superagent": "^1.6.1"
+    "superagent": "^1.6.1",
+    "classnames": "^2.2.1"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
