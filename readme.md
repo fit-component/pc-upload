@@ -3,6 +3,6 @@
 ---
 
 ````jsx
-npm install fit-upload /* or */ fis3 install fit-upload
+npm install fit-upload
 ````
 
