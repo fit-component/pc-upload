@@ -151,9 +151,10 @@ export default class Upload extends React.Component {
         )
     }
 
-    fileInputRender() {
+    fileInputRender(inputStyle = {}) {
         return (
             <input
+                style={inputStyle}
                 ref={(c) => this._fileInput = c}
                 type="file"
                 accept={this.props.accept}
@@ -190,7 +191,7 @@ export default class Upload extends React.Component {
         } else if (type === 'button') {
             return (
                 <span>
-                    <div onClick={() => this._fileInput.click()}>
+                    <div onClick={() => this._fileInput.click()} style={{display: 'inline-block'}}>
                         { this.fileInputRender({display: 'none'}) }
                         {children}
                     </div>
