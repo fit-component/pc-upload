@@ -38,8 +38,7 @@ export default class Upload extends React.Component {
             let result = this.props.beforeUpload(files[i])
             if (result === undefined || result === true) {
                 this.post(files[i]);
-            }
-            if (result.then && typeof result.then === 'function') {
+            } else if (result.then && typeof result.then === 'function') {
                 result.then(() => {
                     this.post(files[i])
                 })
@@ -241,6 +240,6 @@ Upload.defaultProps = {
     multiple: true,
 
     // @desc: 上传前处理，返回true/false/promise
-    hindleBeforeUpload() {
+    beforeUpload() {
     }
 };
