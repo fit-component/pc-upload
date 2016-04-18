@@ -1,6 +1,6 @@
 {
   "name": "fit-upload",
-  "version": "2.0.40",
+  "version": "3.0.0",
   "description": "上传组件",
   "main": "lib/index.js",
   "scripts": {
@@ -11,9 +11,9 @@
     "url": "ssh://g@gitlab.baidu.com:8022/tb-component/pc-upload.git"
   },
   "dependencies": {
-    "react": "^0.14.7",
-    "superagent": "^1.6.1",
-    "classnames": "^2.2.1"
+    "react": "^15.0.1",
+    "superagent": "^1.8.3",
+    "classnames": "^2.2.3"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
