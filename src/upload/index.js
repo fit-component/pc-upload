@@ -48,7 +48,11 @@ export default class Upload extends React.Component {
 
     post(file) {
         var data = new FormData()
-        data.append(this.props.field, file)
+        if (this.props.random) {
+            data.append(this.props.field, file, (Date.now()) + file.name.substr(file.name.lastIndexOf('.')))
+        } else {
+            data.append(this.props.field, file)
+        }
         for (var key in this.props.extraData) {
             data.append(key, this.props.extraData[key])
         }
@@ -238,6 +242,9 @@ Upload.defaultProps = {
 
     // @desc 是否多文件上传
     multiple: true,
+
+    // @desc 是否随机文件名上传,
+    random: false,
 
     // @desc: 上传前处理，返回true/false/promise
     beforeUpload() {
