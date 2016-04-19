@@ -5,4 +5,3 @@
 ````jsx
 npm install fit-upload
 ````
-
