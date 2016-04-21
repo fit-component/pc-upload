@@ -1,9 +1,13 @@
-import React from 'react'
+import * as React from 'react'
+import * as module from './module'
+import {others} from '../../../../common/transmit-transparently/src'
 
-export default class UploadFileList extends React.Component {
+export default class UploadFileList extends React.Component<module.PropsInterface,module.StateInterface> {
+    static defaultProps = new module.Props()
+    public state = new module.State()
+    
     constructor(props) {
         super(props)
-        this.state = {}
     }
 
     textItemRender(info) {
@@ -79,8 +83,3 @@ export default class UploadFileList extends React.Component {
         )
     }
 }
-
-UploadFileList.defaultProps = {
-    type: 'text'
-}
-

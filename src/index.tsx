@@ -1,4 +1,4 @@
 import Upload from './upload'
 
 export default Upload
-export { Upload }
+export {Upload}

@@ -1,6 +1,5 @@
-import React from 'react'
-import { Upload } from 'fit-upload'
-import Button from 'fit-button'
+import * as React from 'react'
+import Upload from '../../src'
 
 let defaultFiles = [{
     url: '/static/左图.jpg',
@@ -10,18 +9,22 @@ let defaultFiles = [{
     name: '右图.jpg'
 }];
 
-export default class Demo extends React.Component {
+export default class Demo extends React.Component<any,any> {
     render() {
+        let innerStyle = {
+            textAlign: 'center',
+            padding: '40px 0'
+        };
+
         return (
-            <Upload type="button" 
+            <Upload type="drag" 
                 action="/"
                 name="file"
                 field="file"
                 listType="picture"
                 value={defaultFiles}
                 extraData={{ test: 1 }} >
-                <Button type="primary"
-                        addonLeft="upload">点击上传</Button>
+                <div style={innerStyle}>拖拽上传</div>
             </Upload>
         )
     }

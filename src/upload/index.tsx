@@ -1,15 +1,19 @@
-import React from "react"
-import request from 'superagent'
-import classNames from 'classnames'
-import UploadFileList from './upload-file-list'
+import * as React from "react"
+import * as request from 'superagent'
+import * as classNames from 'classnames'
+import UploadFileList from '../upload-file-list'
+import * as module from './module'
+import {others} from '../../../../common/transmit-transparently/src'
 
-export default class Upload extends React.Component {
+export default class Upload extends React.Component<module.PropsInterface,module.StateInterface> {
+    static defaultProps = new module.Props()
+    static Type = module.Type
+    static ListType = module.ListType
+    public state = new module.State()
+    private _fileInput:any
+    
     constructor(props) {
-        super(props);
-        this.state = {
-            dragStatus: 'drag',
-            progressInfo: {}
-        }
+        super(props)
     }
 
     getStyles() {
@@ -33,7 +37,7 @@ export default class Upload extends React.Component {
         this.upload(this._fileInput.files)
     }
 
-    upload(files) {
+    upload(files:any) {
         for (let i = 0; i < files.length; i++) {
             let result = this.props.beforeUpload(files[i])
             if (result === undefined || result === true) {
@@ -49,9 +53,9 @@ export default class Upload extends React.Component {
     post(file) {
         var data = new FormData()
         if (this.props.random) {
-            data.append(this.props.field, file, (Date.now()) + file.name.substr(file.name.lastIndexOf('.')))
+            data.append(this.props['field'], file, (Date.now()) + file.name.substr(file.name.lastIndexOf('.')))
         } else {
-            data.append(this.props.field, file)
+            data.append(this.props['field'], file)
         }
         for (var key in this.props.extraData) {
             data.append(key, this.props.extraData[key])
@@ -88,7 +92,7 @@ export default class Upload extends React.Component {
             })
     }
 
-    onFileDrop(e) {
+    onFileDrop(e:any) {
         this.setState({
             dragStatus: e.type
         })
@@ -160,23 +164,22 @@ export default class Upload extends React.Component {
                 style={inputStyle}
                 ref={(c) => this._fileInput = c}
                 type="file"
-                accept={this.props.accept}
+                accept={this.props['accept']}
                 multiple={this.props.multiple}
                 onChange={(e) => this.onFileChange(e)}/>
         )
     }
 
     render() {
-        const {className, type, children, ...others} = this.props
         const classes = classNames({
             '_namespace': true,
-            [className]: className
+            [this.props['classNames']]: !!this.props['classNames']
         })
 
         var styles = this.getStyles()
         var fileList = this.fileListRender()
 
-        if (type === 'drag') {
+        if (this.props.type === 'drag') {
             var dragStyle = this.state.dragStatus === 'dragover' ? Object.assign(styles.dragDefault, styles.dragStart) : styles.dragDefault
             return (
                 <span>
@@ -185,18 +188,18 @@ export default class Upload extends React.Component {
                          onDrop={ this.onFileDrop.bind(this) }
                          onDragOver={ this.onFileDrop.bind(this)}
                          onClick={() => this._fileInput.click()}>
-                        {children}
+                        {this.props.children}
                     </div>
                     {this.progressListRender()}
                     {fileList}
                 </span>
             )
-        } else if (type === 'button') {
+        } else if (this.props.type === 'button') {
             return (
                 <span>
                     <div onClick={() => this._fileInput.click()} style={{display: 'inline-block'}}>
                         { this.fileInputRender({display: 'none'}) }
-                        {children}
+                        {this.props.children}
                     </div>
                     { this.progressListRender() }
                     { fileList }
@@ -213,40 +216,3 @@ export default class Upload extends React.Component {
         )
     }
 }
-
-Upload.defaultProps = {
-    // @desc 文件列表
-    value: [],
-
-    // @desc 默认文件列表
-    defaultValue: [],
-
-    // @desc 同input的name属性，也是上传字段名
-    name: '',
-
-    // @desc 上传地址
-    action: '',
-
-    // @desc 上传状态改变时
-    onChange() {
-    },
-
-    // @desc 样式：drag(拖拽)/button(无样式)/normal(默认)
-    type: 'normal',
-
-    // @desc 上传需要的额外字段
-    extraData: {},
-
-    // @desc 文件列表样式: text/pictrue/none
-    listType: 'text',
-
-    // @desc 是否多文件上传
-    multiple: true,
-
-    // @desc 是否随机文件名上传,
-    random: false,
-
-    // @desc: 上传前处理，返回true/false/promise
-    beforeUpload() {
-    }
-};

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Upload } from 'fit-upload'
+import * as React from 'react'
+import Upload from '../../src'
 
 let defaultFiles = [{
     url: '/static/左图.jpg',
@@ -9,7 +9,7 @@ let defaultFiles = [{
     name: '右图.jpg'
 }];
 
-export default class Demo extends React.Component {
+export default class Demo extends React.Component<any,any> {
     render() {
         return (
             <Upload 
