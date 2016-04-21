@@ -83,8 +83,8 @@ export interface PropsInterface {
 }
 
 export class Props implements PropsInterface {
-    value = []
-    defaultValue = []
+    value:any = []
+    defaultValue:any = []
     name = ''
     action = ''
 

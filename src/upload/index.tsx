@@ -3,6 +3,7 @@ import * as request from 'superagent'
 import * as classNames from 'classnames'
 import UploadFileList from '../upload-file-list'
 import * as module from './module'
+import * as _ from 'lodash'
 import {others} from '../../../../common/transmit-transparently/src'
 
 export default class Upload extends React.Component<module.PropsInterface,module.StateInterface> {
@@ -12,7 +13,7 @@ export default class Upload extends React.Component<module.PropsInterface,module
     public state = new module.State()
     private _fileInput:any
     
-    constructor(props) {
+    constructor(props:any) {
         super(props)
     }
 
@@ -31,7 +32,7 @@ export default class Upload extends React.Component<module.PropsInterface,module
         }
     }
 
-    onFileChange(e) {
+    onFileChange(e:Event) {
         e.preventDefault()
         e.stopPropagation()
         this.upload(this._fileInput.files)
@@ -50,7 +51,7 @@ export default class Upload extends React.Component<module.PropsInterface,module
         }
     }
 
-    post(file) {
+    post(file:any) {
         var data = new FormData()
         if (this.props.random) {
             data.append(this.props['field'], file, (Date.now()) + file.name.substr(file.name.lastIndexOf('.')))
@@ -62,7 +63,7 @@ export default class Upload extends React.Component<module.PropsInterface,module
         }
         request.post(this.props.action)
             .send(data)
-            .on('progress', (e) => {
+            .on('progress', (e:any) => {
                 var progressInfo = this.state.progressInfo
                 progressInfo[file.name] = e.percent
                 this.setState({
@@ -124,7 +125,7 @@ export default class Upload extends React.Component<module.PropsInterface,module
         )
     }
 
-    progressItemRender(key, pos) {
+    progressItemRender(key:string, pos:any) {
         var itemStyle = {
             transition: 'margin .3s ease, opacity .3s ease',
             margin: '10px 0'
@@ -166,7 +167,7 @@ export default class Upload extends React.Component<module.PropsInterface,module
                 type="file"
                 accept={this.props['accept']}
                 multiple={this.props.multiple}
-                onChange={(e) => this.onFileChange(e)}/>
+                onChange={(e:Event) => this.onFileChange(e)}/>
         )
     }
 
@@ -180,7 +181,7 @@ export default class Upload extends React.Component<module.PropsInterface,module
         var fileList = this.fileListRender()
 
         if (this.props.type === 'drag') {
-            var dragStyle = this.state.dragStatus === 'dragover' ? Object.assign(styles.dragDefault, styles.dragStart) : styles.dragDefault
+            var dragStyle = this.state.dragStatus === 'dragover' ? _.assign(styles.dragDefault, styles.dragStart) : styles.dragDefault
             return (
                 <span>
                     { this.fileInputRender({display: 'none'}) }

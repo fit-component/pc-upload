@@ -6,11 +6,11 @@ export default class UploadFileList extends React.Component<module.PropsInterfac
     static defaultProps = new module.Props()
     public state = new module.State()
     
-    constructor(props) {
+    constructor(props:any) {
         super(props)
     }
 
-    textItemRender(info) {
+    textItemRender(info:any) {
         var closeBtnStyle = {
             fontSize: 12,
             float: 'right',
@@ -74,7 +74,7 @@ export default class UploadFileList extends React.Component<module.PropsInterfac
     }
 
     render() {
-        let Children = this.props.list.map((info) => <div key={info.name}>{this.textItemRender(info)}</div>)
+        let Children = this.props.list.map((info:any) => <div key={info.name}>{this.textItemRender(info)}</div>)
 
         return (
             <div>
