@@ -1,6 +1,6 @@
 {
   "name": "fit-upload",
-  "version": "3.1.24",
+  "version": "3.1.26",
   "description": "上传组件",
   "main": "lib/index.js",
   "scripts": {
@@ -11,11 +11,11 @@
     "url": "ssh://g@gitlab.baidu.com:8022/tb-component/pc-upload.git"
   },
   "dependencies": {
-    "react": "^15.0.1",
+    "react": "^0.14.0 || ^15.0.0",
     "superagent": "^1.8.3",
     "classnames": "^2.2.3",
     "lodash": "^3.10.1",
-    "fit-transmit-transparently": "^3.1.21"
+    "fit-transmit-transparently": "^3.1.23"
   },
   "typings": "lib/index.d.ts"
 }
