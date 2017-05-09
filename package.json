@@ -1,6 +1,6 @@
 {
   "name": "fit-upload",
-  "version": "3.1.53",
+  "version": "3.1.55",
   "description": "上传组件",
   "main": "lib/index.js",
   "scripts": {
@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "react": "^0.14.0 || ^15.0.0",
-    "superagent": "^1.8.3",
-    "classnames": "^2.2.3",
-    "lodash": "^3.10.1",
-    "fit-transmit-transparently": "^3.1.50"
+    "superagent": "1.8.3",
+    "classnames": "2.2.3",
+    "lodash": "3.10.1",
+    "fit-transmit-transparently": "^3.1.63"
   },
   "typings": "lib/index.d.ts"
 }
